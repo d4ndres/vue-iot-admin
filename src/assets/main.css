@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-background: 32 43 56;
+    --color-background-dark: 22 31 39;
+    --color-background-alt: 26 36 47;
+    --color-selection: 28 118 197;
+    --color-text-main: 219 219 219;
+    --color-text-bright: 255 255 255;
+    --color-text-muted: 169 177 186;
+    --color-links: 65 173 255;
+    --color-focus: 0 150 191;
+    --color-border: 82 105 128;
+    --color-code: 255 190 133;
+    --color-animation-duration: 0.1s;
+    --color-button-base: 12 21 28;
+    --color-button-hover: 155 155 155;
+    --color-scrollbar-thumb: 155 155 155;
+    --color-scrollbar-thumb-hover: 0 0 0;
+    --color-form-placeholder: 169 169 169;
+    --color-form-text: 255 255 255;
+    --color-variable: 219 64 227;
+    --color-highlight: 239 219 67;
+    --color-success: 2 117 48;
+    --color-white: 255 255 255;
+    --color-black: 0 0 0;
+    --color-danger: 138 32 32;
+  }
+}
