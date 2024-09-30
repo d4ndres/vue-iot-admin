@@ -1,4 +1,6 @@
 <script setup>
+import IotButton from '@/components/button/IotButton.vue'
+
 const { modelValue } = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
 
@@ -13,7 +15,7 @@ const close = () => {
     <div @mousedown="close" :class="{'open': modelValue}" class="curtain w-full h-full flex flex-row-reverse">
       <div @mousedown.stop class="overflow-body shadow-xl shadow-zinc-950 h-full w-full md:w-1/2 bg-background">
         <slot name="default" :close="close">
-          <button @click="close" class="absolute top-4 left-4 border-border border-2 bg-background_dark px-2 py-1 rounded-lg">Cerrar</button>
+          <IotButton @click="close">soma</IotButton>
         </slot>
       </div>
     </div>
