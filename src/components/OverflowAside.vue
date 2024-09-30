@@ -1,41 +1,19 @@
 <script setup>
-
-const props = defineProps(['modelValue'])
+const { modelValue } = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
 
-
-const updateData = () => {
-  emit('update:modelValue', !props.modelValue)
-}
-
-const closeAside = () => {
+const close = () => {
   emit('update:modelValue', false)
+  emit('close', false)
 }
-
-
 </script>
 
 <template>
-<!-- 
-class="bg-background_alt/10 backdrop-blur-sm fixed h-full w-full left-0 top-0 z-50">
-    <div @mousedown.stop 
-    class="bg-background_body fixed h-full z-50 right-0 w-screen md:w-1/2 shadow-2xl shadow-black
-    flex flex-col border border-border border-x-0 border-y-2 p-4
--->
-
-<div v-if="props.modelValue" @mousedown="closeAside" class="bg-background_alt/10 backdrop-blur-sm fixed h-full w-full left-0 top-0 z-50">
-    <div @mousedown.stop class="move bg-background_body fixed h-full z-50 right-0 w-screen md:w-1/2 shadow-2xl shadow-black
-    flex flex-col border border-border border-x-0 border-y-2">
-      <div class="px-4 flex items-center h-14 border-b dark:border-gray_dark">
-        <slot name="header"></slot>
-      </div>
-      <div class="p-4 flex-1 h-14 border-b dark:border-gray_dark overflow-auto">
-        <slot></slot>
-      </div>
-      <div class="flex items-center flex-row-reverse h-14 px-4">
-        <slot name="footer">
-          <slot name="otherButtons"></slot>
-          <ButtonCancel @click="updateData"/>
+  <div class="overflow fixed h-full w-full left-0 top-0 z-50" v-show="modelValue">
+    <div @mousedown="close" :class="{'open': modelValue}" class="curtain w-full h-full flex flex-row-reverse">
+      <div @mousedown.stop class="overflow-body shadow-xl shadow-zinc-950 h-full w-full md:w-1/2 bg-background">
+        <slot name="default" :close="close">
+          <button @click="close" class="absolute top-4 left-4 border-border border-2 bg-background_dark px-2 py-1 rounded-lg">Cerrar</button>
         </slot>
       </div>
     </div>
@@ -43,17 +21,36 @@ class="bg-background_alt/10 backdrop-blur-sm fixed h-full w-full left-0 top-0 z-
 </template>
 
 <style scoped>
-.move {
-  animation: move linear 0.2s;
+.overflow {
+  transition: display .3s ease allow-discrete;
 }
 
-@keyframes move {
-  from {
+.curtain.open {
+  background: rgba(0,0,0, 0);
+  backdrop-filter: blur(4px);
+  transition: .3s ease;
+
+  @starting-style {
+    background: rgba(0,0,0,0);
+    backdrop-filter: blur(0px);
+  }
+}
+.curtain {
+  transition: all .3s ease;
+  backdrop-filter: blur(0px);
+  background: rgba(0,0,0,0);
+}
+
+.curtain.open .overflow-body {
+  transform: translateX(0);
+  transition: all .3s ease;
+  @starting-style {
     transform: translateX(100%);
   }
-  to {
-    transform: translateX(0);
-  }
 }
 
+.curtain .overflow-body {
+  transform: translateX(100%);
+  transition: all .3s ease;
+}
 </style>

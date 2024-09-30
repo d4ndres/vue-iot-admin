@@ -27,12 +27,20 @@ const columnsTable = [
   { bindKey: "saverRule", text: "save on DB" },
 ]
 
-
+import OverflowAside from '@/components/OverflowAside.vue';
+const controllerOverflow = ref(false)
 </script>
 
 <template>
   <div class="p-4">
-    <h1>devices</h1>
+    <OverflowAside v-model="controllerOverflow"></OverflowAside>
+
+    <h1 @click="controllerOverflow = true" class="text-2xl mb-4">devices</h1>
+    <div>
+      <button 
+      @click="controllerOverflow = true"
+      class="border border-1 border-border px-2 py-1 rounded-lg">Hola</button>
+    </div>
     <EasyTable :data="maquetaDevices" :columns="columnsTable">
       <template #default="{ value, key, row, rowIndex }">
         <div v-if="key == 'actions'" class="flex justify-center">
