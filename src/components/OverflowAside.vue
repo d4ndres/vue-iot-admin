@@ -15,7 +15,7 @@ const close = () => {
     <div @mousedown="close" :class="{'open': modelValue}" class="curtain w-full h-full flex flex-row-reverse">
       <div @mousedown.stop class="overflow-body shadow-xl shadow-zinc-950 h-full w-full md:w-1/2 bg-background">
         <slot name="default" :close="close">
-          <IotButton @click="close">soma</IotButton>
+          <IotButton class="absolute top-4 left-4" @click="close">soma</IotButton>
         </slot>
       </div>
     </div>

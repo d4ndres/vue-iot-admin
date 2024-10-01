@@ -13,7 +13,7 @@ const {navList} = defineProps<Props>()
 <template>
   <div class="bg-background text-text_main h-screen">
     <div class="flex">
-      <NavList class="shadow-sm shadow-border bg-background_dark h-screen min-w-60 w-1/6 overflow-auto" :navList="navList"></NavList>
+      <NavList class="shadow-sm shadow-border bg-background_dark h-screen w-0 md:min-w-60 md:w-1/6 overflow-auto" :navList="navList"></NavList>
       <main class="h-screen w-full overflow-auto">
         <slot></slot>
       </main>
