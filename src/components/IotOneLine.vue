@@ -1,24 +1,45 @@
 <script setup>
 import Chart from 'chart.js/auto'
-import { nextTick, ref, shallowRef, watch, onMounted } from 'vue'
+import { nextTick, ref, shallowRef, watch, onMounted, defineProps } from 'vue'
 
 const vueJsCharts = shallowRef(null)
 const canvasChartEl = ref(null)
 
-const { log } = defineProps({
+const { log, nLastSamples, title, configChart } = defineProps({
   log: {
     type: Array
+  },
+  nLastSamples: {
+    type: Number,
+    default: Infinity
+  },
+  title: {
+    type: String,
+    default: 'History line'
+  },
+  configChart: {
+    type: Object,
+    default: {
+      fill: true,
+      borderColor: 'rgba(27, 255, 255, 1)',
+      backgroundColor: 'rgba(0,150,191, 0.4)',
+      tension: 0.1
+    }
   }
 })
 
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString()
+}
+
 onMounted(() => {
-  if(log.length) {
+  if (log.length) {
     const samples = [...log]
     initCanvasChart(samples)
   }
 })
 
-const initCanvasChart = ( samples ) => {
+const initCanvasChart = (samples) => {
   vueJsCharts.value = new Chart(
     canvasChartEl.value.getContext('2d'),
     {
@@ -26,18 +47,14 @@ const initCanvasChart = ( samples ) => {
       data: {
         labels: samples
           .sort((a, b) => a.date - b.date)
-          .map(s => new Date(s.date)
-            .toLocaleDateString()),
+          .map(s => formatDate(s.date)),
         datasets: [
           {
-            label: 'Sample',
+            label: title,
             data: samples
               .sort((a, b) => a.date - b.date)
               .map(s => s.value),
-            fill: true,
-            borderColor: 'rgba(27, 255, 255, 1)',
-            backgroundColor: 'rgba(0,150,191, 0.4)',
-            tension: 0.1
+            ...configChart
           }
         ]
       },
@@ -51,23 +68,18 @@ const initCanvasChart = ( samples ) => {
 
 watch(() => log, (signal) => {
   const samples = [...signal]
-
   if (vueJsCharts.value) {
     vueJsCharts.value.data.labels = samples
       .sort((a, b) => a.date - b.date)
-      .map(s => String(s.date))
-      .slice(-7)
+      .map(s => formatDate(s.date))
+      .slice(-nLastSamples)
     vueJsCharts.value.data.datasets[0].data = samples
       .sort((a, b) => a.date - b.date)
       .map(s => s.value)
-      .slice(-7)
-
-    console.log(vueJsCharts.value.data)
+      .slice(-nLastSamples)
     vueJsCharts.value.update()
-
     return
   }
-
 
   nextTick(() => {
     initCanvasChart(samples)
@@ -77,5 +89,5 @@ watch(() => log, (signal) => {
 
 </script>
 <template>
-  <canvas ref="canvasChartEl"></canvas>
+  <canvas class="h-auto w-auto" ref="canvasChartEl"></canvas>
 </template>
